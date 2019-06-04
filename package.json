@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve demo/main.js",
+    "build": "vue-cli-service build --target lib --name weekly-schedule src/index.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "moment": "^2.24.0",
     "vue": "^2.6.10"
   },
   "devDependencies": {
