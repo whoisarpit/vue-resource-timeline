@@ -39,20 +39,21 @@
         type: Array,
       },
       eventClass: {
-        required: false,
         type: String,
+        default: '',
       },
       showEmptyDays: {
-        required: false,
         type: Boolean,
         default: false,
       },
       showAddBtn: {
         type: Boolean,
+        default: false,
       },
       maxEvents: {
         required: false,
         type: Number,
+        default: 0,
       },
     },
 
