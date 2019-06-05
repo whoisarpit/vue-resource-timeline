@@ -1,25 +1,28 @@
 <template>
   <div>
     <div class="ws__day"
-      v-for="{dayName, day, events} in eventsByDay"
+      v-for="{dayName, day, schedules} in eventsByDay"
       :key="day">
       <div class="ws__day__name">
         {{dayName}}
       </div>
-      <div class="ws__events"
-        align-center>
-        <div class="ws__event"
-          :class="eventClass"
-          v-for="(event, index) in events"
+      <div class="ws__events-container">
+        <div class="ws__events"
+          v-for="(events, index) in schedules"
           :key="index"
-          @click="clickEvent(event.id)"
-          :style="{'flex-basis': `${event.duration * 100/maxDayDuration}%`}">
-          {{event.startTime}} - {{event.endTime}}
+          align-center>
+          <div class="ws__event"
+            :class="event.class"
+            v-for="(event, index) in events"
+            :key="index"
+            @click="clickEvent(event)"
+            :style="{'flex-basis': `${event.duration * 100/maxDayDuration}%`}">
+            {{event.startTime}} - {{event.endTime}}
+          </div>
         </div>
       </div>
       <button class="ws__add"
         v-if="showAddBtn"
-        :disabled="maxEvents && events.length >= maxEvents"
         @click="addEvent(day)">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path fill="none" d="M0 0h24v24H0V0z"/>
@@ -34,7 +37,7 @@
 
   export default {
     props: {
-      events: {
+      schedules: {
         required: true,
         type: Array,
       },
@@ -59,26 +62,39 @@
 
     computed: {
       eventsByDay() {
-        if (!Array.isArray(this.events)) {
+        if (!Array.isArray(this.schedules) || this.schedules.length === 0) {
           return [];
         }
 
         const eventsByDay = moment.weekdaysShort().map((dayName, index) => ({
           day: index,
           dayName,
-          events: [],
+          schedules: this.schedules.map(() => []),
         }));
 
-        this.events.forEach((event) => {
-          const startTime = moment(event.startTime, 'HH:mm');
-          const endTime = moment(event.endTime, 'HH:mm');
-          // ignore minutes
-          const startHr = Number(startTime.format('HH'));
-          const endHr = Number(endTime.format('HH'));
-          const duration = endHr - startHr;
-          eventsByDay[event.day].events.push({
-            ...event,
-            duration,
+        this.schedules.forEach((schedule, index) => {
+          const eventClass = schedule.class;
+          schedule.events.forEach((event) => {
+            const startTime = moment(event.startTime, 'HH:mm');
+            const endTime = moment(event.endTime, 'HH:mm');
+            // ignore minutes
+            const startHr = Number(startTime.format('HH'));
+            const endHr = Number(endTime.format('HH'));
+            const duration = endHr - startHr;
+            eventsByDay[event.day].schedules[index].push({
+              day: event.day,
+              startTime: event.startTime,
+              endTime: event.endTime,
+              class: `${(event.class || '')} ${eventClass}`,
+              duration,
+              origEvent: event,
+            });
+          });
+        });
+
+        eventsByDay.forEach((day) => {
+          day.schedules.forEach((events) => {
+            events.sort((event1, event2) => (event2.startTime > event1.startTime ? -1 : 0));
           });
         });
 
@@ -86,15 +102,23 @@
           return eventsByDay;
         }
 
-        return eventsByDay.filter(dayEvents => dayEvents.events.length !== 0);
+        return eventsByDay.filter((day) => {
+          const numEvents = day.schedules.map(events => events.length);
+          return Math.max(numEvents);
+        });
       },
       maxDayDuration() {
-        return this.eventsByDay.reduce((maxDuration, dayEvents) => {
-          const totalDuration = dayEvents.events
-            .reduce((total, { duration }) => total + duration, 0);
+        const arraySum = numArray => numArray.reduce((accum, val) => (accum + val), 0);
+        const dayDurations = [];
 
-          return totalDuration > maxDuration ? totalDuration : maxDuration;
-        }, 0);
+        this.eventsByDay.forEach((day) => {
+          day.schedules.forEach((events) => {
+            const durations = events.map(({ duration }) => duration);
+            dayDurations.push(arraySum(durations));
+          });
+        });
+
+        return Math.max(...dayDurations);
       },
     },
     methods: {
@@ -102,9 +126,8 @@
         this.$emit('addBtnClick', day);
       },
 
-      async clickEvent(eventId) {
-        const event = this.events.find(currSlot => currSlot.id === eventId);
-        this.$emit('eventClick', event);
+      async clickEvent(event) {
+        this.$emit('eventClick', event.origEvent);
       },
     },
   };
@@ -125,9 +148,13 @@
       }
     }
 
+    &__events-container {
+      flex-grow: 1;
+    }
+
     &__events {
       display: flex;
-      flex-grow: 1;
+      min-height: 2.25rem;
     }
 
     &__event {
@@ -139,7 +166,7 @@
       white-space: nowrap;
       background-color: #42A5F5;
       color: #ffffff;
-      margin: 0 0.125rem;
+      margin: 0.125rem;
     }
 
     &__add {

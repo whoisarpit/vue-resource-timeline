@@ -35,11 +35,28 @@ export default {
 
 | Prop | Description  | Type  | Default |
 |------|--------------|-------|---------|
-|events|Array of events of format `[{id: Number/String, day: Number, startTime:'HH:mm', endTime: 'HH:mm',}]`|Array||
+|schedules*|Array of schedules|Array||
 |eventClass|A class you want to attach to each event|String|''|
 |showEmptyDays|Toggle showing days which don't have any events to them|Boolean|false|
 |showAddBtn|Toggle showing add button|Boolean|false|
 |maxEvents|Toggle disabling add button after a max number of events is added|Number|0|
+
+`schedules` expects the following format -
+```js
+  const schedules = [{
+    name: String,
+    class: String,
+    events: [
+      {
+        day: Number,
+        startTime: String, // 'HH:mm'
+        endTime: String, // 'HH:mm'
+        class: String,
+      },
+    ],
+  }];
+```
+The class is added to each event of the schedule.
 
 ## Events -
 
