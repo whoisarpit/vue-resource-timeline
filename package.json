@@ -1,16 +1,36 @@
 {
   "name": "vue-weekly-schedule",
   "version": "0.1.0",
-  "private": true,
+  "author": {
+    "name": "Arpit Roopchandani",
+    "email": "arpit9295@gmail.com",
+    "url": "https://github.com/arpit9295"
+  },
+  "license": "GPL-3.0",
   "scripts": {
     "serve": "vue-cli-service serve demo/main.js",
-    "build": "vue-cli-service build --target lib --name weekly-schedule src/index.js",
-    "lint": "vue-cli-service lint"
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "demo": "vue-cli-service demo",
+    "docs": "npm run docs:serve",
+    "docs:build": "vue-cli-service docs --mode build",
+    "docs:serve": "vue-cli-service docs --mode serve",
+    "prepublish": "vue-cli-service lint && vue-cli-service docs --mode build && vue-cli-service build",
+    "start": "vue-cli-service serve"
   },
+  "main": "dist/vue-weekly-schedule.common.js",
+  "module": "dist/vue-weekly-schedule.esm.js",
+  "unpkg": "dist/vue-weekly-schedule.umd.min.js",
+  "files": [
+    "dist/vue-weekly-schedule.common.js",
+    "dist/vue-weekly-schedule.umd.min.js",
+    "dist/vue-weekly-schedule.umd.js",
+    "dist/vue-weekly-schedule.esm.js",
+    "src"
+  ],
   "dependencies": {
     "core-js": "^2.6.5",
-    "moment": "^2.24.0",
-    "vue": "^2.6.10"
+    "moment": "^2.24.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
@@ -22,6 +42,10 @@
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
+    "vue": "^2.6.10",
+    "vue-cli-plugin-p11n": "^0.3.0",
     "vue-template-compiler": "^2.6.10"
-  }
+  },
+  "jsdelivr": "dist/vue-weekly-schedule.umd.min.js",
+  "sideeffects": false
 }
