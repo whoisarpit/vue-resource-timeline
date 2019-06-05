@@ -35,11 +35,18 @@ export default {
 
 | Prop | Description  | Type  | Default |
 |------|--------------|-------|---------|
-|events|Array of events of format `[{day: Number, startTime:'HH:mm', endTime: 'HH:mm',}]`|Array||
+|events|Array of events of format `[{id: Number/String, day: Number, startTime:'HH:mm', endTime: 'HH:mm',}]`|Array||
 |eventClass|A class you want to attach to each event|String|''|
 |showEmptyDays|Toggle showing days which don't have any events to them|Boolean|false|
 |showAddBtn|Toggle showing add button|Boolean|false|
 |maxEvents|Toggle disabling add button after a max number of events is added|Number|0|
+
+## Events -
+
+| Event | Description  | Payload  |
+|-------|--------------|----------|
+|addBtnClick|Emitted when the `+` button is clicked|`Number`, day of add button that was clicked|
+|eventClick|Emitted when an event is clicked|`Object`, event object for the clicked event|
 
 ## Development setup
 
