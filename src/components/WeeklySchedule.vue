@@ -17,13 +17,14 @@
           {{event.startTime}} - {{event.endTime}}
         </div>
       </div>
-      <button
+      <button class="ws__add"
         v-if="showAddBtn"
-        :disabled="events.length >= maxEvents"
+        :disabled="maxEvents && events.length >= maxEvents"
         @click="addEvent(day)">
-        <v-icon>
-          add
-        </v-icon>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path fill="none" d="M0 0h24v24H0V0z"/>
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
       </button>
     </div>
   </div>
@@ -52,7 +53,6 @@
       maxEvents: {
         required: false,
         type: Number,
-        default: 2,
       },
     },
 
@@ -113,6 +113,7 @@
     &__day {
       display: flex;
       margin: 0.25rem 0;
+      align-items: center;
 
       &__name {
         line-height: 1rem;
@@ -138,6 +139,28 @@
       background-color: #42A5F5;
       color: #ffffff;
       margin: 0 0.125rem;
+    }
+
+    &__add {
+      appearance: none;
+      border: none;
+      background: transparent;
+      border-radius: 16px;
+      padding: 0.125rem;
+      font-size: 1.5rem;
+      margin-left: 0.25rem;
+
+
+      &:hover,
+      &:focus {
+        outline: none;
+        background-color: rgba(black, 0.1);
+      }
+
+      svg {
+        height: 1em;
+        display: block;
+      }
     }
   }
 
