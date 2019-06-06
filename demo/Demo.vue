@@ -7,7 +7,8 @@
       :showEmptyDays="true"
       :showAddBtn="true"
       :maxEvents="3"
-      :schedules="schedules"/>
+      :schedules="schedules"
+      :showLegend="true"/>
   </div>
 </template>
 
