@@ -1,5 +1,5 @@
 /*!
- * vue-weekly-schedule v0.2.0 
+ * vue-weekly-schedule v0.2.1 
  * (c) 2019 Arpit Roopchandani
  * Released under the GPL-3.0 License.
  */
@@ -53,6 +53,26 @@ function _asyncToGenerator(fn) {
       _next(undefined);
     });
   };
+}
+
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+}
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+    return arr2;
+  }
+}
+
+function _iterableToArray(iter) {
+  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+}
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
 }
 
 function createCommonjsModule(fn, module) {
@@ -844,7 +864,7 @@ var script = {
         var numEvents = day.schedules.map(function (events) {
           return events.length;
         });
-        return Math.max(numEvents);
+        return Math.max.apply(Math, _toConsumableArray(numEvents));
       });
     },
     maxDayDuration: function maxDayDuration() {
@@ -1070,7 +1090,7 @@ var __vue_staticRenderFns__ = [];
   /* style */
   const __vue_inject_styles__ = function (inject) {
     if (!inject) return
-    inject("data-v-b82dc3fc_0", { source: ".ws__day{display:flex;margin:.25rem 0;align-items:center}.ws__day__name{line-height:1rem;padding:.5rem 0;flex-basis:40px;flex-grow:0;font-weight:600}.ws__events-container{flex-grow:1}.ws__events{display:flex;min-height:2.25rem}.ws__event{line-height:1rem;padding:.5rem;border-radius:4px;font-size:.875rem;flex-grow:0;white-space:nowrap;background-color:#42a5f5;color:#fff;margin:.125rem}.ws__add{appearance:none;border:none;background:0 0;border-radius:16px;padding:.125rem;font-size:1.5rem;margin-left:.25rem}.ws__add:focus,.ws__add:hover{outline:0;background-color:rgba(0,0,0,.1)}.ws__add svg{height:1em;display:block}", map: undefined, media: undefined });
+    inject("data-v-5ee13be0_0", { source: ".ws__day{display:flex;margin:.25rem 0;align-items:center}.ws__day__name{line-height:1rem;padding:.5rem 0;flex-basis:40px;flex-grow:0;font-weight:600}.ws__events-container{flex-grow:1}.ws__events{display:flex;min-height:2.25rem}.ws__event{line-height:1rem;padding:.5rem;border-radius:4px;font-size:.875rem;flex-grow:0;white-space:nowrap;background-color:#42a5f5;color:#fff;margin:.125rem}.ws__add{appearance:none;border:none;background:0 0;border-radius:16px;padding:.125rem;font-size:1.5rem;margin-left:.25rem}.ws__add:focus,.ws__add:hover{outline:0;background-color:rgba(0,0,0,.1)}.ws__add svg{height:1em;display:block}", map: undefined, media: undefined });
 
   };
   /* scoped */
@@ -1094,7 +1114,7 @@ var __vue_staticRenderFns__ = [];
     undefined
   );
 
-var version = '0.2.0';
+var version = '0.2.1';
 
 var install = function install(Vue) {
   Vue.component('WeeklySchedule', WeeklySchedule);
