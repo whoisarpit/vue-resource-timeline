@@ -104,7 +104,7 @@
 
         return eventsByDay.filter((day) => {
           const numEvents = day.schedules.map(events => events.length);
-          return Math.max(numEvents);
+          return Math.max(...numEvents);
         });
       },
       maxDayDuration() {

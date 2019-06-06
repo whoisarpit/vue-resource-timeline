@@ -1,6 +1,6 @@
 import WeeklySchedule from './components/WeeklySchedule.vue';
 
-const version = '0.2.0';
+const version = '0.2.1';
 
 const install = (Vue) => {
   Vue.component('WeeklySchedule', WeeklySchedule);
