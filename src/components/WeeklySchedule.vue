@@ -33,6 +33,14 @@
         </svg>
       </button>
     </div>
+    <div class="ws__footer" v-if="showLegend">
+      <div class="ws__legend"
+        :class="schedule.class"
+        v-for="(schedule, index) in schedules"
+        :key="index">
+        {{schedule.name}}
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -60,6 +68,11 @@
         required: false,
         type: Number,
         default: 0,
+      },
+      showLegend: {
+        required: false,
+        type: Boolean,
+        default: true,
       },
     },
 
@@ -133,6 +146,20 @@
   };
 </script>
 <style lang="scss">
+  $ws-radius-sm: 4px;
+  $ws-primary: #03A9F4;
+  $ws-success: #4CAF50;
+  $ws-warning: #FFEB3B;
+  $ws-danger: #F44336;
+
+  $ws-primary--bg: lighten($ws-primary, 10%);
+  $ws-success--bg: lighten($ws-success, 6%);
+  $ws-warning--bg: lighten($ws-warning, 15%);
+  $ws-danger--bg: lighten($ws-danger, 8%);
+
+  $ws-text: #212121;
+  $ws-text--light: #FAFAFA;
+
   .ws {
     &__day {
       display: flex;
@@ -160,11 +187,25 @@
     &__event {
       line-height: 1rem;
       padding: 0.5rem;
-      border-radius: 4px;
+      border-radius: $ws-radius-sm;
       font-size: 0.875rem;
       white-space: nowrap;
-      background-color: #42A5F5;
-      color: #ffffff;
+      background-color: $ws-primary--bg;
+      color: $ws-text--light;
+
+      &.success {
+        background-color: $ws-success--bg;
+      }
+
+      &.warning {
+        background-color: $ws-warning--bg;
+        color: $ws-text;
+      }
+
+      &.danger {
+        background-color: $ws-danger--bg;
+        color: $ws-text--light;
+      }
 
       &__wrapper {
         flex-grow: 0;
@@ -192,6 +233,48 @@
         height: 1em;
         display: block;
       }
+    }
+
+    &__legend {
+      display: inline-block;
+      line-height: 1.5;
+      margin: 0 1em;
+
+      &::before {
+        content: '';
+        display: inline-block;
+        height: 1.5em;
+        width: 1.5em;
+        vertical-align: middle;
+        border: 1px solid 1px;
+        margin-bottom: 4px;
+        margin-right: 4px;
+        border-radius: 4px;
+        background: $ws-primary--bg;
+      }
+
+      &.success {
+        &::before {
+          background-color: $ws-success--bg;
+        }
+      }
+
+      &.warning {
+        &::before {
+          background-color: $ws-warning--bg;
+        }
+      }
+
+      &.danger {
+        &::before {
+          background-color: $ws-danger--bg;
+        }
+      }
+    }
+
+    &__footer {
+      margin-top: 1em;
+      text-align: right;
     }
   }
 
