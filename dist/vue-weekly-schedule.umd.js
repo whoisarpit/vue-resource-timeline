@@ -1,5 +1,5 @@
 /*!
- * vue-weekly-schedule v0.1.0 
+ * vue-weekly-schedule v0.2.0 
  * (c) 2019 Arpit Roopchandani
  * Released under the GPL-3.0 License.
  */
@@ -59,40 +59,6 @@
         _next(undefined);
       });
     };
-  }
-
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
-  }
-
-  function _objectSpread(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i] != null ? arguments[i] : {};
-      var ownKeys = Object.keys(source);
-
-      if (typeof Object.getOwnPropertySymbols === 'function') {
-        ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
-          return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-        }));
-      }
-
-      ownKeys.forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
-    }
-
-    return target;
   }
 
   function createCommonjsModule(fn, module) {
@@ -810,30 +776,33 @@
 
   var script = {
     props: {
-      events: {
+      schedules: {
         required: true,
         type: Array
       },
       eventClass: {
-        required: false,
-        type: String
+        type: String,
+        default: ''
       },
       showEmptyDays: {
-        required: false,
         type: Boolean,
         default: false
       },
       showAddBtn: {
-        type: Boolean
+        type: Boolean,
+        default: false
       },
       maxEvents: {
         required: false,
-        type: Number
+        type: Number,
+        default: 0
       }
     },
     computed: {
       eventsByDay: function eventsByDay() {
-        if (!Array.isArray(this.events)) {
+        var _this = this;
+
+        if (!Array.isArray(this.schedules) || this.schedules.length === 0) {
           return [];
         }
 
@@ -841,37 +810,67 @@
           return {
             day: index,
             dayName: dayName,
-            events: []
+            schedules: _this.schedules.map(function () {
+              return [];
+            })
           };
         });
-        this.events.forEach(function (event) {
-          var startTime = moment(event.startTime, 'HH:mm');
-          var endTime = moment(event.endTime, 'HH:mm'); // ignore minutes
+        this.schedules.forEach(function (schedule, index) {
+          var eventClass = schedule.class;
+          schedule.events.forEach(function (event) {
+            var startTime = moment(event.startTime, 'HH:mm');
+            var endTime = moment(event.endTime, 'HH:mm'); // ignore minutes
 
-          var startHr = Number(startTime.format('HH'));
-          var endHr = Number(endTime.format('HH'));
-          var duration = endHr - startHr;
-          eventsByDay[event.day].events.push(_objectSpread({}, event, {
-            duration: duration
-          }));
+            var startHr = Number(startTime.format('HH'));
+            var endHr = Number(endTime.format('HH'));
+            var duration = endHr - startHr;
+            eventsByDay[event.day].schedules[index].push({
+              day: event.day,
+              startTime: event.startTime,
+              endTime: event.endTime,
+              class: "".concat(event.class || '', " ").concat(eventClass),
+              duration: duration,
+              origEvent: event
+            });
+          });
+        });
+        eventsByDay.forEach(function (day) {
+          day.schedules.forEach(function (events) {
+            events.sort(function (event1, event2) {
+              return event2.startTime > event1.startTime ? -1 : 0;
+            });
+          });
         });
 
         if (this.showEmptyDays) {
           return eventsByDay;
         }
 
-        return eventsByDay.filter(function (dayEvents) {
-          return dayEvents.events.length !== 0;
+        return eventsByDay.filter(function (day) {
+          var numEvents = day.schedules.map(function (events) {
+            return events.length;
+          });
+          return Math.max(numEvents);
         });
       },
       maxDayDuration: function maxDayDuration() {
-        return this.eventsByDay.reduce(function (maxDuration, dayEvents) {
-          var totalDuration = dayEvents.events.reduce(function (total, _ref) {
-            var duration = _ref.duration;
-            return total + duration;
+        var arraySum = function arraySum(numArray) {
+          return numArray.reduce(function (accum, val) {
+            return accum + val;
           }, 0);
-          return totalDuration > maxDuration ? totalDuration : maxDuration;
-        }, 0);
+        };
+
+        var dayDurations = [];
+        this.eventsByDay.forEach(function (day) {
+          day.schedules.forEach(function (events) {
+            var durations = events.map(function (_ref) {
+              var duration = _ref.duration;
+              return duration;
+            });
+            dayDurations.push(arraySum(durations));
+          });
+        });
+        return Math.max.apply(Math, dayDurations);
       }
     },
     methods: {
@@ -902,18 +901,14 @@
       clickEvent: function () {
         var _clickEvent = _asyncToGenerator(
         /*#__PURE__*/
-        regenerator.mark(function _callee2(eventId) {
-          var event;
+        regenerator.mark(function _callee2(event) {
           return regenerator.wrap(function _callee2$(_context2) {
             while (1) {
               switch (_context2.prev = _context2.next) {
                 case 0:
-                  event = this.events.find(function (currSlot) {
-                    return currSlot.id === eventId;
-                  });
-                  this.$emit('eventClick', event);
+                  this.$emit('eventClick', event.origEvent);
 
-                case 2:
+                case 1:
                 case "end":
                   return _context2.stop();
               }
@@ -1074,14 +1069,14 @@
   var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',_vm._l((_vm.eventsByDay),function(ref){
   var dayName = ref.dayName;
   var day = ref.day;
-  var events = ref.events;
-  return _c('div',{key:day,staticClass:"ws__day"},[_c('div',{staticClass:"ws__day__name"},[_vm._v("\n      "+_vm._s(dayName)+"\n    ")]),_vm._v(" "),_c('div',{staticClass:"ws__events",attrs:{"align-center":""}},_vm._l((events),function(event,index){return _c('div',{key:index,staticClass:"ws__event",class:_vm.eventClass,style:({'flex-basis': ((event.duration * 100/_vm.maxDayDuration) + "%")}),on:{"click":function($event){return _vm.clickEvent(event.id)}}},[_vm._v("\n        "+_vm._s(event.startTime)+" - "+_vm._s(event.endTime)+"\n      ")])}),0),_vm._v(" "),(_vm.showAddBtn)?_c('button',{staticClass:"ws__add",attrs:{"disabled":_vm.maxEvents && events.length >= _vm.maxEvents},on:{"click":function($event){return _vm.addEvent(day)}}},[_c('svg',{attrs:{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24"}},[_c('path',{attrs:{"fill":"none","d":"M0 0h24v24H0V0z"}}),_vm._v(" "),_c('path',{attrs:{"d":"M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"}})])]):_vm._e()])}),0)};
+  var schedules = ref.schedules;
+  return _c('div',{key:day,staticClass:"ws__day"},[_c('div',{staticClass:"ws__day__name"},[_vm._v("\n      "+_vm._s(dayName)+"\n    ")]),_vm._v(" "),_c('div',{staticClass:"ws__events-container"},_vm._l((schedules),function(events,index){return _c('div',{key:index,staticClass:"ws__events",attrs:{"align-center":""}},_vm._l((events),function(event,index){return _c('div',{key:index,staticClass:"ws__event",class:event.class,style:({'flex-basis': ((event.duration * 100/_vm.maxDayDuration) + "%")}),on:{"click":function($event){return _vm.clickEvent(event)}}},[_vm._v("\n          "+_vm._s(event.startTime)+" - "+_vm._s(event.endTime)+"\n        ")])}),0)}),0),_vm._v(" "),(_vm.showAddBtn)?_c('button',{staticClass:"ws__add",on:{"click":function($event){return _vm.addEvent(day)}}},[_c('svg',{attrs:{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24"}},[_c('path',{attrs:{"fill":"none","d":"M0 0h24v24H0V0z"}}),_vm._v(" "),_c('path',{attrs:{"d":"M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"}})])]):_vm._e()])}),0)};
   var __vue_staticRenderFns__ = [];
 
     /* style */
     const __vue_inject_styles__ = function (inject) {
       if (!inject) return
-      inject("data-v-18a08f71_0", { source: ".ws__day{display:flex;margin:.25rem 0;align-items:center}.ws__day__name{line-height:1rem;padding:.5rem 0;flex-basis:40px;flex-grow:0;font-weight:600}.ws__events{display:flex;flex-grow:1}.ws__event{line-height:1rem;padding:.5rem;border-radius:4px;font-size:.875rem;flex-grow:0;white-space:nowrap;background-color:#42a5f5;color:#fff;margin:0 .125rem}.ws__add{appearance:none;border:none;background:0 0;border-radius:16px;padding:.125rem;font-size:1.5rem;margin-left:.25rem}.ws__add:focus,.ws__add:hover{outline:0;background-color:rgba(0,0,0,.1)}.ws__add svg{height:1em;display:block}", map: undefined, media: undefined });
+      inject("data-v-b82dc3fc_0", { source: ".ws__day{display:flex;margin:.25rem 0;align-items:center}.ws__day__name{line-height:1rem;padding:.5rem 0;flex-basis:40px;flex-grow:0;font-weight:600}.ws__events-container{flex-grow:1}.ws__events{display:flex;min-height:2.25rem}.ws__event{line-height:1rem;padding:.5rem;border-radius:4px;font-size:.875rem;flex-grow:0;white-space:nowrap;background-color:#42a5f5;color:#fff;margin:.125rem}.ws__add{appearance:none;border:none;background:0 0;border-radius:16px;padding:.125rem;font-size:1.5rem;margin-left:.25rem}.ws__add:focus,.ws__add:hover{outline:0;background-color:rgba(0,0,0,.1)}.ws__add svg{height:1em;display:block}", map: undefined, media: undefined });
 
     };
     /* scoped */
@@ -1105,7 +1100,7 @@
       undefined
     );
 
-  var version = '0.1.0';
+  var version = '0.2.0';
 
   var install = function install(Vue) {
     Vue.component('WeeklySchedule', WeeklySchedule);
