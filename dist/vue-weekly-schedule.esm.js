@@ -1,5 +1,5 @@
 /*!
- * vue-weekly-schedule v0.2.1 
+ * vue-weekly-schedule v0.3.0 
  * (c) 2019 Arpit Roopchandani
  * Released under the GPL-3.0 License.
  */
@@ -810,6 +810,11 @@ var script = {
       required: false,
       type: Number,
       default: 0
+    },
+    showLegend: {
+      required: false,
+      type: Boolean,
+      default: true
     }
   },
   computed: {
@@ -832,11 +837,8 @@ var script = {
       this.schedules.forEach(function (schedule, index) {
         var eventClass = schedule.class;
         schedule.events.forEach(function (event) {
-          var startTime = moment(event.startTime, 'HH:mm');
-          var endTime = moment(event.endTime, 'HH:mm'); // ignore minutes
-
-          var startHr = Number(startTime.format('HH'));
-          var endHr = Number(endTime.format('HH'));
+          var startHr = moment.duration(event.startTime).asHours();
+          var endHr = moment.duration(event.endTime).asHours();
           var duration = endHr - startHr;
           eventsByDay[event.day].schedules[index].push({
             day: event.day,
@@ -1080,17 +1082,17 @@ var browser = createInjector;
 const __vue_script__ = script;
 
 /* template */
-var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',_vm._l((_vm.eventsByDay),function(ref){
+var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._l((_vm.eventsByDay),function(ref){
 var dayName = ref.dayName;
 var day = ref.day;
 var schedules = ref.schedules;
-return _c('div',{key:day,staticClass:"ws__day"},[_c('div',{staticClass:"ws__day__name"},[_vm._v("\n      "+_vm._s(dayName)+"\n    ")]),_vm._v(" "),_c('div',{staticClass:"ws__events-container"},_vm._l((schedules),function(events,index){return _c('div',{key:index,staticClass:"ws__events",attrs:{"align-center":""}},_vm._l((events),function(event,index){return _c('div',{key:index,staticClass:"ws__event",class:event.class,style:({'flex-basis': ((event.duration * 100/_vm.maxDayDuration) + "%")}),on:{"click":function($event){return _vm.clickEvent(event)}}},[_vm._v("\n          "+_vm._s(event.startTime)+" - "+_vm._s(event.endTime)+"\n        ")])}),0)}),0),_vm._v(" "),(_vm.showAddBtn)?_c('button',{staticClass:"ws__add",on:{"click":function($event){return _vm.addEvent(day)}}},[_c('svg',{attrs:{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24"}},[_c('path',{attrs:{"fill":"none","d":"M0 0h24v24H0V0z"}}),_vm._v(" "),_c('path',{attrs:{"d":"M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"}})])]):_vm._e()])}),0)};
+return _c('div',{key:day,staticClass:"ws__day"},[_c('div',{staticClass:"ws__day__name"},[_vm._v("\n      "+_vm._s(dayName)+"\n    ")]),_vm._v(" "),_c('div',{staticClass:"ws__events-container"},_vm._l((schedules),function(events,index){return _c('div',{key:index,staticClass:"ws__events",attrs:{"align-center":""}},_vm._l((events),function(event,index){return _c('div',{key:index,staticClass:"ws__event__wrapper",style:({'flex-basis': ((event.duration * 100/_vm.maxDayDuration) + "%")})},[_c('div',{staticClass:"ws__event",class:event.class,on:{"click":function($event){return _vm.clickEvent(event)}}},[_vm._v("\n            "+_vm._s(event.startTime)+" - "+_vm._s(event.endTime)+"\n          ")])])}),0)}),0),_vm._v(" "),(_vm.showAddBtn)?_c('button',{staticClass:"ws__add",on:{"click":function($event){return _vm.addEvent(day)}}},[_c('svg',{attrs:{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24"}},[_c('path',{attrs:{"fill":"none","d":"M0 0h24v24H0V0z"}}),_vm._v(" "),_c('path',{attrs:{"d":"M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"}})])]):_vm._e()])}),_vm._v(" "),(_vm.showLegend)?_c('div',{staticClass:"ws__footer"},_vm._l((_vm.schedules),function(schedule,index){return _c('div',{key:index,staticClass:"ws__legend",class:schedule.class},[_vm._v("\n      "+_vm._s(schedule.name)+"\n    ")])}),0):_vm._e()],2)};
 var __vue_staticRenderFns__ = [];
 
   /* style */
   const __vue_inject_styles__ = function (inject) {
     if (!inject) return
-    inject("data-v-5ee13be0_0", { source: ".ws__day{display:flex;margin:.25rem 0;align-items:center}.ws__day__name{line-height:1rem;padding:.5rem 0;flex-basis:40px;flex-grow:0;font-weight:600}.ws__events-container{flex-grow:1}.ws__events{display:flex;min-height:2.25rem}.ws__event{line-height:1rem;padding:.5rem;border-radius:4px;font-size:.875rem;flex-grow:0;white-space:nowrap;background-color:#42a5f5;color:#fff;margin:.125rem}.ws__add{appearance:none;border:none;background:0 0;border-radius:16px;padding:.125rem;font-size:1.5rem;margin-left:.25rem}.ws__add:focus,.ws__add:hover{outline:0;background-color:rgba(0,0,0,.1)}.ws__add svg{height:1em;display:block}", map: undefined, media: undefined });
+    inject("data-v-165be3f1_0", { source: ".ws__day{display:flex;margin:.25rem 0;align-items:center}.ws__day__name{line-height:1rem;padding:.5rem 0;flex-basis:40px;flex-grow:0;font-weight:600}.ws__events-container{flex-grow:1}.ws__events{display:flex;min-height:2.25rem}.ws__event{line-height:1rem;padding:.5rem;border-radius:4px;font-size:.875rem;white-space:nowrap;background-color:#2ebcfc;color:#fafafa}.ws__event.success{background-color:#60ba63}.ws__event.warning{background-color:#fff388;color:#212121}.ws__event.danger{background-color:#f6675d;color:#fafafa}.ws__event__wrapper{flex-grow:0;padding:.125rem}.ws__add{appearance:none;border:none;background:0 0;border-radius:16px;padding:.125rem;font-size:1.5rem;margin-left:.25rem}.ws__add:focus,.ws__add:hover{outline:0;background-color:rgba(0,0,0,.1)}.ws__add svg{height:1em;display:block}.ws__legend{display:inline-block;line-height:1.5;margin:0 1em}.ws__legend::before{content:'';display:inline-block;height:1.5em;width:1.5em;vertical-align:middle;border:1px solid 1px;margin-bottom:4px;margin-right:4px;border-radius:4px;background:#2ebcfc}.ws__legend.success::before{background-color:#60ba63}.ws__legend.warning::before{background-color:#fff388}.ws__legend.danger::before{background-color:#f6675d}.ws__footer{margin-top:1em;text-align:right}", map: undefined, media: undefined });
 
   };
   /* scoped */
@@ -1114,7 +1116,7 @@ var __vue_staticRenderFns__ = [];
     undefined
   );
 
-var version = '0.2.1';
+var version = '0.3.0';
 
 var install = function install(Vue) {
   Vue.component('WeeklySchedule', WeeklySchedule);
