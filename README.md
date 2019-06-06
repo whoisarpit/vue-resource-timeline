@@ -40,6 +40,7 @@ export default {
 |showEmptyDays|Toggle showing days which don't have any events to them|Boolean|false|
 |showAddBtn|Toggle showing add button|Boolean|false|
 |maxEvents|Toggle disabling add button after a max number of events is added|Number|0|
+|showLegend|Show legend for the calendars|Boolean|false|
 
 `schedules` expects the following format -
 ```js
