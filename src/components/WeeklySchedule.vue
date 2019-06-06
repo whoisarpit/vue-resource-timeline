@@ -11,14 +11,17 @@
           v-for="(events, index) in schedules"
           :key="index"
           align-center>
-          <div class="ws__event"
-            :class="event.class"
+          <div class="ws__event__wrapper"
             v-for="(event, index) in events"
             :key="index"
-            @click="clickEvent(event)"
             :style="{'flex-basis': `${event.duration * 100/maxDayDuration}%`}">
-            {{event.startTime}} - {{event.endTime}}
+            <div class="ws__event"
+              :class="event.class"
+              @click="clickEvent(event)">
+              {{event.startTime}} - {{event.endTime}}
+            </div>
           </div>
+
         </div>
       </div>
       <button class="ws__add"
@@ -75,11 +78,8 @@
         this.schedules.forEach((schedule, index) => {
           const eventClass = schedule.class;
           schedule.events.forEach((event) => {
-            const startTime = moment(event.startTime, 'HH:mm');
-            const endTime = moment(event.endTime, 'HH:mm');
-            // ignore minutes
-            const startHr = Number(startTime.format('HH'));
-            const endHr = Number(endTime.format('HH'));
+            const startHr = moment.duration(event.startTime).asHours();
+            const endHr = moment.duration(event.endTime).asHours();
             const duration = endHr - startHr;
             eventsByDay[event.day].schedules[index].push({
               day: event.day,
@@ -162,11 +162,14 @@
       padding: 0.5rem;
       border-radius: 4px;
       font-size: 0.875rem;
-      flex-grow: 0;
       white-space: nowrap;
       background-color: #42A5F5;
       color: #ffffff;
-      margin: 0.125rem;
+
+      &__wrapper {
+        flex-grow: 0;
+        padding: 0.125rem;
+      }
     }
 
     &__add {
