@@ -35,7 +35,7 @@
     </div>
     <div class="ws__footer" v-if="showLegend">
       <div class="ws__legend"
-        :class="schedule.class"
+        :class="schedule.legendClass"
         v-for="(schedule, index) in schedules"
         :key="index">
         {{schedule.name}}
@@ -72,7 +72,7 @@
       showLegend: {
         required: false,
         type: Boolean,
-        default: true,
+        default: false,
       },
     },
 
