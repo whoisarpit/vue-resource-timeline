@@ -78,10 +78,6 @@
 
     computed: {
       eventsByDay() {
-        if (!Array.isArray(this.schedules) || this.schedules.length === 0) {
-          return [];
-        }
-
         const eventsByDay = moment.weekdaysShort().map((dayName, index) => ({
           day: index,
           dayName,
