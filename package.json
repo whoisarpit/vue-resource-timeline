@@ -1,10 +1,13 @@
 {
-  "name": "vue-weekly-schedule",
-  "version": "0.3.2",
+  "name": "vue-resource-timeline",
+  "version": "1.0.0",
   "author": {
     "name": "Arpit Roopchandani",
-    "email": "arpit9295@gmail.com",
     "url": "https://github.com/arpit9295"
+  },
+  "homepage": "https://github.com/arpit9295/vue-resource-timeline",
+  "bugs": {
+    "url": "https://github.com/arpit9295/vue-resource-timeline/issues"
   },
   "license": "GPL-3.0",
   "scripts": {
@@ -15,14 +18,14 @@
     "prepublish": "vue-cli-service lint && vue-cli-service build",
     "start": "vue-cli-service serve"
   },
-  "main": "dist/vue-weekly-schedule.common.js",
-  "module": "dist/vue-weekly-schedule.esm.js",
-  "unpkg": "dist/vue-weekly-schedule.umd.min.js",
+  "main": "dist/vue-resource-timeline.common.js",
+  "module": "dist/vue-resource-timeline.esm.js",
+  "unpkg": "dist/vue-resource-timeline.umd.min.js",
   "files": [
-    "dist/vue-weekly-schedule.common.js",
-    "dist/vue-weekly-schedule.umd.min.js",
-    "dist/vue-weekly-schedule.umd.js",
-    "dist/vue-weekly-schedule.esm.js",
+    "dist/vue-resource-timeline.common.js",
+    "dist/vue-resource-timeline.umd.min.js",
+    "dist/vue-resource-timeline.umd.js",
+    "dist/vue-resource-timeline.esm.js",
     "src"
   ],
   "dependencies": {
@@ -43,6 +46,6 @@
     "vue-cli-plugin-p11n": "^0.3.0",
     "vue-template-compiler": "^2.6.10"
   },
-  "jsdelivr": "dist/vue-weekly-schedule.umd.min.js",
+  "jsdelivr": "dist/vue-resource-timeline.umd.min.js",
   "sideeffects": false
 }

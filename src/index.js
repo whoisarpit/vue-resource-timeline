@@ -1,9 +1,9 @@
-import WeeklySchedule from './components/WeeklySchedule.vue';
+import ResourceTimeline from './components/ResourceTimeline.vue';
 
-const version = '0.3.2';
+const version = '1.0.0';
 
 const install = (Vue) => {
-  Vue.component('WeeklySchedule', WeeklySchedule);
+  Vue.component('ResourceTimeline', ResourceTimeline);
 };
 
 const plugin = {
@@ -14,7 +14,7 @@ const plugin = {
 export default plugin;
 
 export {
-  WeeklySchedule,
+  ResourceTimeline,
   plugin,
 };
 
