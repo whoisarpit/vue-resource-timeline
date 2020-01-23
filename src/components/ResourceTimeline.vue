@@ -73,6 +73,7 @@
               origEvent: event,
               style: getEventStyle(event),
               title: event.title,
+              class: event.class,
             })),
           id: resource.id,
           title: resource.title,
