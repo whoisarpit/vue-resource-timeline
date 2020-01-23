@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="ws__resource"
+    <div class="rt__resource"
       v-for="resource in resourcesWithEvents"
       :key="resource.id"
       :class="resource.class">
-      <div class="ws__resource__title">
+      <div class="rt__resource__title">
         {{resource.title}}
       </div>
-      <div class="ws__events">
-        <div class="ws__event"
+      <div class="rt__events">
+        <div class="rt__event"
           v-for="(event, index) in resource.events"
           :key="index"
           :class="event.class"
@@ -17,7 +17,7 @@
           {{ event.title  }}
         </div>
       </div>
-      <button class="ws__add"
+      <button class="rt__add"
         @click="addEvent(resource)">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path fill="none" d="M0 0h24v24H0V0z"/>
@@ -99,21 +99,21 @@
   };
 </script>
 <style lang="scss">
-  $ws-radius-sm: 4px;
-  $ws-primary: #03A9F4;
-  $ws-success: #4CAF50;
-  $ws-warning: #FFEB3B;
-  $ws-danger: #F44336;
+  $rt-radius-sm: 4px;
+  $rt-primary: #03A9F4;
+  $rt-success: #4CAF50;
+  $rt-warning: #FFEB3B;
+  $rt-danger: #F44336;
 
-  $ws-primary--bg: lighten($ws-primary, 10%);
-  $ws-success--bg: lighten($ws-success, 6%);
-  $ws-warning--bg: lighten($ws-warning, 15%);
-  $ws-danger--bg: lighten($ws-danger, 8%);
+  $rt-primary--bg: lighten($rt-primary, 10%);
+  $rt-success--bg: lighten($rt-success, 6%);
+  $rt-warning--bg: lighten($rt-warning, 15%);
+  $rt-danger--bg: lighten($rt-danger, 8%);
 
-  $ws-text: #212121;
-  $ws-text--light: #FAFAFA;
+  $rt-text: #212121;
+  $rt-text--light: #FAFAFA;
 
-  .ws {
+  .rt {
     &__resource {
       display: flex;
       margin: 0.25rem 0;
@@ -139,11 +139,11 @@
       height: 100%;
       line-height: 1rem;
       padding: 0.5rem;
-      border-radius: $ws-radius-sm;
+      border-radius: $rt-radius-sm;
       font-size: 0.875rem;
       white-space: nowrap;
-      background-color: $ws-primary--bg;
-      color: $ws-text--light;
+      background-color: $rt-primary--bg;
+      color: $rt-text--light;
     }
 
     &__add {
