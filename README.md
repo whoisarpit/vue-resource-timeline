@@ -1,30 +1,30 @@
-# vue-weekly-schedule
+# vue-resource-timeline
 
-A simple component to show a repeating weekly schedule.
+A simple component to show timeline of events categorized by resources.
 
 ## Install
 
 ```
-npm install --save vue-weekly-schedule
+npm install --save vue-resource-timeline
 ```
 
 Use as a plugin -
 
 ```js
 import Vue from 'vue';
-import WeeklySchedule from 'vue-weekly-schedule';
+import ResourceTimeline from 'vue-resource-timeline';
 
-Vue.use(WeeklySchedule); // Adds 'weekly-schedule' component
+Vue.use(ResourceTimeline); // Adds 'resource-timeline' component
 ```
 
 or directly use as a component
 
 ```js
-import WeeklySchedule from 'vue-weekly-schedule';
+import ResourceTimeline from 'vue-resource-timeline';
 
 export default {
   components: {
-    WeeklySchedule,
+    ResourceTimeline,
     ...
   },
   ...
@@ -35,36 +35,37 @@ export default {
 
 | Prop | Description  | Type  | Default |
 |------|--------------|-------|---------|
-|schedules*|Array of schedules|Array||
-|eventClass|A class you want to attach to each event|String|''|
-|showEmptyDays|Toggle showing days which don't have any events to them|Boolean|false|
+|resources*|Array of resources|Array||
+|events*|Array of events|Array||
+|showEmptyResource|Toggle showing of resources with no events|Boolean|false|
 |showAddBtn|Toggle showing add button|Boolean|false|
-|maxEvents|Toggle disabling add button after a max number of events is added|Number|0|
-|showLegend|Show legend for the calendars|Boolean|false|
 
-`schedules` expects the following format -
+`events` expects the following format -
 ```js
-  const schedules = [{
-    name: String,
-    class: String,
-    events: [
-      {
-        day: Number,
-        startTime: String, // 'HH:mm'
-        endTime: String, // 'HH:mm'
-        class: String,
-      },
-    ],
-  }];
+const events = [{
+  resourceId: String/Number, // Strictly matches the value of a resource.id
+  start: String, // 'HH:mm'
+  end: String, // 'HH:mm'
+  class: String, // Optional
+  title: String, // Optional
+}];
 ```
-The class is added to each event of the schedule.
+
+`resources` expects the following format -
+```js
+const resources = [{
+  id: String/Number, // Strictly matches the value of a resource.id
+  class: String, // Optional
+  title: String, // Optional
+}];
+```
 
 ## Events -
 
 | Event | Description  | Payload  |
 |-------|--------------|----------|
 |addBtnClick|Emitted when the `+` button is clicked|`Number`, day of add button that was clicked|
-|eventClick|Emitted when an event is clicked|`Object`, event object for the clicked event|
+|eventClick|Emitted when an event is clicked|`Object`, original event object for the clicked event|
 
 ## Development setup
 
@@ -94,4 +95,4 @@ npm run lint
 
 ## License
 
-[MIT](https://github.com/arpit9295/vue-weekly-schedule/blob/master/LICENSE.md)
+[MIT](https://github.com/arpit9295/vue-resource-timeline/blob/master/LICENSE.md)
