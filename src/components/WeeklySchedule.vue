@@ -78,7 +78,7 @@
 
     computed: {
       eventsByDay() {
-        const eventsByDay = moment.weekdaysShort().map((dayName, index) => ({
+        const eventsByDay = moment.weekdaysShort(true).map((dayName, index) => ({
           day: index,
           dayName,
           schedules: this.schedules.map(() => []),
