@@ -13,6 +13,7 @@
           :key="index"
           :class="event.class"
           :style="event.style"
+          :title="event.title"
           @click="clickEvent(event)">
           {{ event.title  }}
         </div>
@@ -145,6 +146,7 @@
       white-space: nowrap;
       background-color: $rt-primary--bg;
       color: $rt-text--light;
+      overflow: hidden;
     }
 
     &__add {
