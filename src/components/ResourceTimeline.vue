@@ -13,7 +13,7 @@
           :key="index"
           :class="event.class"
           :style="event.style"
-          :title="event.title"
+          :title="event.tooltip"
           @click="clickEvent(event)">
           {{ event.title  }}
         </div>
@@ -74,6 +74,7 @@
               origEvent: event,
               style: getEventStyle(event),
               title: event.title,
+              tooltip: event.tooltip || event.title,
               class: event.class,
             })),
           id: resource.id,
